@@ -38,7 +38,7 @@ difference() {
         cube([75, 60, 2], true);
         
         // Hole for cnnector
-        translate([36, 15, -1.5])
+        translate([42, 15, -1.5])
         cube([10, 20, 4], true);
 
     }
