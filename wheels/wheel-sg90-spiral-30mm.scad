@@ -44,7 +44,6 @@ for ( rib = [0:18:360]) {
     square([0.43,0.43], center = true);
 }
 
-// Make a sloid disk and add holes.
 difference() {
     // The rim
     translate([0,0,1.75]) {
@@ -60,9 +59,9 @@ difference() {
     linear_extrude(3.5)    
     for (step = [1:1:6]) {
         // Pivot aroung origin
-        rotate([0,0,step*60])
+        rotate([0,0,step*45])
         // Move out from origin
-        translate([5 + (step *1.0), 0,0])
+        translate([6 + (step *1.1), 0,0])
         // Make corner face origin
         rotate([0,0,45])
         // Make a square
