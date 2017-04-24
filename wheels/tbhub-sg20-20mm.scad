@@ -1,17 +1,37 @@
+/*
+Copyright (c) 2017 Paul Austin - SDG
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 
 $fn=60;
 
+use <tbhub-core.scad>
 
 // dimensions units in mm
-servoSplines = 20;
-servoDiameter = 5.0; 
 slatWidth = 10;
 slatDepth = 10;
 slatThickness = 1.9;
 stickDiameter = 6;
 hubDiameter = 20;
+coreDiameter = 7;
 
 // Strategy 
 // 1. Core hub + spline core
@@ -20,20 +40,21 @@ hubDiameter = 20;
 
 // Hub
 module plugHub(plugCount = 6) {
+    coreHub(h = slatWidth);
     difference() {
         color("cyan") rotate_extrude() {
             difference(){
-                translate([0,-slatWidth/2,0]) square([hubDiameter,slatWidth]);
-                translate([hubDiameter+2,0,0]) circle(d=slatWidth-1);
+                translate([0,0,0]) square([hubDiameter,slatWidth]);
+                translate([hubDiameter+2,slatWidth/2,0]) circle(d=slatWidth-1);
             }
         }
 
         #union () {
-            translate([0,0,-((slatWidth+1)/2)]) cylinder(h = slatWidth+1, d = 8);
+            translate([0,0,-0.5]) cylinder(h = slatWidth+1, d = coreDiameter);
             for(i=[0:(360/plugCount):360]) {
-                translate([0,0,-(slatWidth+1)])
+                translate([0,0,0])
                 rotate(i)
-                translate([hubDiameter-slatDepth,0,(slatWidth+1)/2]) rotate([90,0,0])  {
+                translate([hubDiameter-slatDepth,0,-0.5]) rotate([90,0,0])  {
                     // Slot for a popsicle stick
                     translate([0,0,-slatThickness/2])   
                     linear_extrude(slatThickness) square([slatDepth,slatWidth+1]);
