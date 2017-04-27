@@ -40,7 +40,6 @@ coreDiameter = 6.9;
 
 // Hub
 module plugHub(plugCount = 6) {
-    coreHub(coreH = slatWidth, splineCount = 21, splineH = 3);
     difference() {
         color("cyan") rotate_extrude() {
             difference(){
@@ -50,6 +49,7 @@ module plugHub(plugCount = 6) {
         }
 
         #union () {
+            coreHub(coreH = slatWidth, splineCount = 21, splineH = 3);
             translate([0,0,-0.5]) cylinder(h = slatWidth+1, d = coreDiameter);
             for(i=[0:(360/plugCount):360]) {
                 translate([0,0,0])
