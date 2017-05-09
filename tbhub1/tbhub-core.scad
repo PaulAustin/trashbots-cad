@@ -22,7 +22,14 @@ SOFTWARE.
 
 $fn = 50;
 
-module coreHub(splineCount = 20, coreH = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
+module simpleHub(splineCount = 20, h = 4.5, d = 8.5) {
+    // Six sides cylinder is a short cut for extruded hexagon. Its also
+    // much faster than constructing one from polygons.
+    // Use the simple hub to create plug hole for a hub.
+    cylinder($fn = 6, d=d, h=h);
+}
+
+module coreHub(splineCount = 20, h = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
     
     // Approx spline shaft diameters
     // sg90(subMicro) - 5mm
@@ -30,6 +37,7 @@ module coreHub(splineCount = 20, coreH = 4.5, splineH = 3, splineD=5.0, d = 8.5)
     screwFlangeThickness = 3.7;
     screwHeadDiameter = 5;
     screwShaftDiameter = 2.2;
+    coreH= h;
     
     // The main shaft hub
     difference() {
