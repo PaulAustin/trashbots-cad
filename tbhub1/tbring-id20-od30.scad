@@ -22,22 +22,33 @@ use <tbhub-core.scad>
 
 thickness = 10;
 hubDiameter = 10;
-toothCount = 18;
+toothCount = 28;
+odRadius = 31;
+idRadius = 20.1;
 
 $fn=60;
+
+toothStep = 360/toothCount;
 
 difference() {
     linear_extrude(thickness) {
         difference() {
-            circle(20);
-            for(i=[0:360/toothCount:360]) {
-                rotate(i) translate([20.2,0,0]) circle(1.75);
+            circle(odRadius);
+            for(i=[0:toothStep:360]) {
+                rotate(i) translate([odRadius+0.2,0,0]) circle(1.75);
             }
         }
-        for(i=[0:360/toothCount:360]) {
-            rotate(i+10) translate([19.8,0,0]) circle(1.73);
+        for(i=[0:toothStep:360]) {
+            rotate(i + (toothStep/2)) translate([odRadius-0.2,0,0]) circle(1.73);
         }
     }
-    
-    simpleHub(d=hubDiameter, h=thickness);
+    linear_extrude(thickness) {
+     union() {
+        circle(r=idRadius);
+        for(i=[0:360/6:360]) {
+            rotate(i) translate([odRadius-6,0,0]) circle(3.0);
+        }
+     }
+ }
+    //simpleHub(d=hubDiameter, h=thickness);
 }

@@ -1,6 +1,5 @@
  /*
 Copyright (c) 2017 Paul Austin - SDG
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -19,25 +18,4 @@ SOFTWARE.
 */
 
 use <tbhub-core.scad>
-
-thickness = 10;
-hubDiameter = 10;
-toothCount = 18;
-
-$fn=60;
-
-difference() {
-    linear_extrude(thickness) {
-        difference() {
-            circle(20);
-            for(i=[0:360/toothCount:360]) {
-                rotate(i) translate([20.2,0,0]) circle(1.75);
-            }
-        }
-        for(i=[0:360/toothCount:360]) {
-            rotate(i+10) translate([19.8,0,0]) circle(1.73);
-        }
-    }
-    
-    simpleHub(d=hubDiameter, h=thickness);
-}
+coreHub(d=10, h=10);
