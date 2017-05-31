@@ -58,10 +58,19 @@ module negativePegRing (pegCount = 6, diameter = 26.8, innerDiameter = 15, heigh
 
 module mbcBoard() {
     // Place holder for circuit board
-    translate([8, 18, 27]) union () { 
+    translate([8, 16, 27]) union () { 
         color( "lime", alpha = 0.5) cube([63.5,99.5,3.7]);  
         //color("black",0.5)  
     }
+}
+
+module cover() {
+    // Top
+    translate([0,0,oHeight-6])
+        cube([oWidth, oDepth, 6]);
+    // End plate
+    translate([0,oDepth-5,0])
+        cube([oWidth,5, oHeight]);
 }
 
 module mbcBoardBracket() {
@@ -72,6 +81,7 @@ module mbcBoardBracket() {
 }
 
 
+//color("orange",1.0) cover();
 
 // Extras to turn on to help judge elements
 //sg90(); 
@@ -91,11 +101,19 @@ difference() {
     // Need to round the edges
     union() {
         difference() {
-            // The main box the every thin is removed from.    
-            cube([oWidth, oDepth, oHeight]);
-            
-            translate([plugThickness+1, wallThickness + 0.5 , wallThickness + 0.5]) 
-                cube([oWidth - (2*(plugThickness+1)), oDepth, (oHeight - 2.5)]);
+            // The main box the every thin is removed from.
+            // Add some rounding to the edge.
+            minkowski() {
+                translate([1.5,1.5,1.5]) cube([oWidth-3, oDepth-3, oHeight-3]);
+                sphere(r=1.5);
+            }
+            union() {
+                color("orange",1.0) cover();
+                // clear out core of box
+                translate([plugThickness+1, wallThickness + 1.5 , wallThickness + 0.5]) 
+                    cube([oWidth - (2*(plugThickness+1)), oDepth, (oHeight - 2.5)]);
+                
+            }
         }
         color( "purple", 1.0 ) translate([25,15,wallThicknessP]) cube([30,10,13]);
         
@@ -104,10 +122,10 @@ difference() {
         color( "purple", 1.0 ) translate([oWidth-8,12,0]) cube([5,25,28]);
 
         // Add brackets to hold the board in place.
-        translate([0,113,16]) mbcBoardBracket();
+        translate([0,112,16]) mbcBoardBracket();
         translate([0,85,16]) mbcBoardBracket();
         translate([0,56,16]) mbcBoardBracket();
-        translate([80,113,16]) rotate(180) mbcBoardBracket();
+        translate([80,112,16]) rotate(180) mbcBoardBracket();
         translate([80,85,16]) rotate(180) mbcBoardBracket();
         translate([80,56,16]) rotate(180) mbcBoardBracket();
     }
@@ -131,12 +149,17 @@ union() {
     translate([40,0,20]) rotate([90,0,0]) negativePegRing();
     translate([60,0,20]) rotate([90,0,0]) negativePegRing();
 
+    // put them on the sides
     #translate([0,60,20]) rotate([0,90,0]) negativePegRing();
     #translate([0,100,20]) rotate([0,90,0]) negativePegRing();
     
     #translate([80-2.5,60,20]) rotate([0,90,0]) negativePegRing();
     #translate([80-2.5,100,20]) rotate([0,90,0]) negativePegRing();
 
+    // put them on the end
+    #translate([20,2.5,20]) rotate([90,30,0]) negativePegRing();
+    #translate([40,2.5,20]) rotate([90,30,0]) negativePegRing();
+    #translate([60,2.5,20]) rotate([90,30,0]) negativePegRing();
 
     
     #translate([7.3,20,20]) sg90();
@@ -148,11 +171,11 @@ union() {
     
     // box top
     #translate([0,primaryUnit/2,oHeight/2]) rotate ([0,90,0]) 
-        cylinder(d2 = plugDiameter + 1, d1 = plugDiameter + 5,
+        cylinder(d2 = plugDiameter + 1, d1 = plugDiameter + 2,
         h = plugThickness);    
 
     #translate([(oWidth - plugThickness), primaryUnit/2,oHeight/2]) rotate ([0,90,0]) 
-        cylinder(d1 = plugDiameter + 1, d2 = plugDiameter + 5, 
+        cylinder(d1 = plugDiameter + 1, d2 = plugDiameter + 2, 
         h = plugThickness);    
 
     // box bottom
