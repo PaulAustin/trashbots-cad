@@ -38,11 +38,14 @@ plugThickness = 3.5;
 $fn = 40;
 module sg90() {
     sg90Width = 12;
-    width = 12.5;
+    width = 12.6;
     gearcCapThickness = 4.2;
     color("blue", 1.0 ) translate([0,0,width/2]) rotate([0,90,0]) union() {
+        // Slab that makes tabs on the end.
         translate ([0,-width/2-4.5, 5]) cube([width, 31.8, 2]);
+        // Main servo body
         translate ([0,-width/2,0]) cube([width,23.0, 22.8]);
+        // Gear caps on top
         #translate([3.2, 4.2,-gearcCapThickness]) cube([6.0,3.0,4.3]);
         translate([width/2, 0.0,-gearcCapThickness]) cylinder(h=4.3, d = width);
         #translate([width/2, 7.0,-gearcCapThickness]) cylinder(h=4.3, d = 6);
@@ -58,7 +61,7 @@ module negativePegRing (pegCount = 6, diameter = 26.8, innerDiameter = 15, heigh
 
 module mbcBoard() {
     // Place holder for circuit board
-    translate([8, 16, 27]) union () { 
+    #translate([4.5, 15, 27]) union () { 
         color( "lime", alpha = 0.5) cube([63.5,99.5,3.7]);  
         //color("black",0.5)  
     }
@@ -69,7 +72,7 @@ module cover() {
     translate([0,0,oHeight-6])
         cube([oWidth, oDepth, 6]);
     // End plate
-    translate([0,oDepth-5,0])
+    #translate([0,oDepth-5,3.5])
         cube([oWidth,5, oHeight]);
 }
 
@@ -77,7 +80,6 @@ module mbcBoardBracket() {
     translate([0,3,0]) rotate([90,0,0]) linear_extrude(height=6) {
         polygon([[0,-4],[13,9],[13,12],[0,13]]);  
     }  
-//polygon(points = [ [x, y], ... ], paths = [ [p1, p2, p3..], ...], convexity = N);
 }
 
 
@@ -110,24 +112,26 @@ difference() {
             union() {
                 color("orange",1.0) cover();
                 // clear out core of box
-                translate([plugThickness+1, wallThickness + 1.5 , wallThickness + 0.5]) 
+                translate([plugThickness+1, wallThickness + 1.5 , wallThickness + 1.0]) 
                     cube([oWidth - (2*(plugThickness+1)), oDepth, (oHeight - 2.5)]);
                 
             }
         }
-        color( "purple", 1.0 ) translate([25,15,wallThicknessP]) cube([30,10,13]);
+        
+        // Center post to support servos. Has tight clearance with battery.
+        color( "purple", 1.0 ) translate([25,12,wallThicknessP]) cube([30,10,13]);
         
         // Add thickness where servo goes.
         color( "purple", 1.0 ) translate([3,12,0]) cube([5,25,28]);
         color( "purple", 1.0 ) translate([oWidth-8,12,0]) cube([5,25,28]);
 
         // Add brackets to hold the board in place.
-        translate([0,112,16]) mbcBoardBracket();
-        translate([0,85,16]) mbcBoardBracket();
-        translate([0,56,16]) mbcBoardBracket();
-        translate([80,112,16]) rotate(180) mbcBoardBracket();
-        translate([80,85,16]) rotate(180) mbcBoardBracket();
-        translate([80,56,16]) rotate(180) mbcBoardBracket();
+        translate([0,109,16]) mbcBoardBracket();
+        translate([80,109,16]) rotate(180) mbcBoardBracket();
+        translate([0,88.5,16]) mbcBoardBracket();
+        translate([80,88.5,16]) rotate(180) mbcBoardBracket();
+        translate([0,58,16]) mbcBoardBracket();
+        translate([80,58,16]) rotate(180) mbcBoardBracket();
     }
 
 union() {    
