@@ -63,14 +63,24 @@ module mbcBoard() {
         //color("black",0.5)  
     }
 }
-//sg90(); 
 
+module mbcBoardBracket() {
+    translate([0,3,0]) rotate([90,0,0]) linear_extrude(height=6) {
+        polygon([[0,-4],[13,9],[13,12],[0,13]]);  
+    }  
+//polygon(points = [ [x, y], ... ], paths = [ [p1, p2, p3..], ...], convexity = N);
+}
+
+
+
+// Extras to turn on to help judge elements
+//sg90(); 
 //mbcBoard();
 
 // main cube
 
 intersection() {
-    translate ([0,0,0]) cube([400,350,500]);
+    translate ([-20,-20,-20]) cube([400,350,500]);
     // Servo slice
     // translate ([0,5,0]) cube([60,15,50]);
     // translate ([0,5,0]) cube([80,35,50]);
@@ -93,6 +103,13 @@ difference() {
         color( "purple", 1.0 ) translate([3,12,0]) cube([5,25,28]);
         color( "purple", 1.0 ) translate([oWidth-8,12,0]) cube([5,25,28]);
 
+        // Add brackets to hold the board in place.
+        translate([0,113,16]) mbcBoardBracket();
+        translate([0,85,16]) mbcBoardBracket();
+        translate([0,56,16]) mbcBoardBracket();
+        translate([80,113,16]) rotate(180) mbcBoardBracket();
+        translate([80,85,16]) rotate(180) mbcBoardBracket();
+        translate([80,56,16]) rotate(180) mbcBoardBracket();
     }
 
 union() {    
@@ -110,8 +127,22 @@ union() {
     translate([40,100,0.0]) negativePegRing();
     translate([60,100,0.0]) negativePegRing();
 
+    translate([20,0,20]) rotate([90,0,0]) negativePegRing();
+    translate([40,0,20]) rotate([90,0,0]) negativePegRing();
+    translate([60,0,20]) rotate([90,0,0]) negativePegRing();
+
+    #translate([0,60,20]) rotate([0,90,0]) negativePegRing();
+    #translate([0,100,20]) rotate([0,90,0]) negativePegRing();
+    
+    #translate([80-2.5,60,20]) rotate([0,90,0]) negativePegRing();
+    #translate([80-2.5,100,20]) rotate([0,90,0]) negativePegRing();
+
+
+    
     #translate([7.3,20,20]) sg90();
     #translate([oWidth-7.3,20,20]) rotate([0,180,0]) sg90();
+
+    #mbcBoard();
 
     // remove space for each plug
     
