@@ -70,22 +70,22 @@ module mbcBoard() {
      translate([4.5, 14, 27]) union () { 
          color( "lime", alpha = 0.5) cube([63.5,100.0,3.7]);  
         translate ([5,90,-10])cube([10,10,10]);
+        color("black",0.5) translate ([5,90,1.7])cube([55,10,9]);
         //color("black",0.5)  
     }
 }
 
 module cover() {
     // Top
-    /*
-    #translate([0,0,oHeight-3]) union () {
-        #translate([5,oDepth-5,-2]) rotate([15,0,0]) cube([oWidth-13,2,5]);
+    #translate([0,0,oHeight-2]) union () {
+        #translate([5,oDepth-5,-3]) rotate([7,0,0]) cube([oWidth-13,2,5]);
         // ridges
         translate([4.5,oDepth-68,-3])  cube([2,64,3]);
         translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
         // main slab
-        cube([oWidth, oDepth, 3]);
+        cube([oWidth, oDepth, 2]);
+        translate([4.5,7,-1]) cube([oWidth-9, oDepth-30, 3]);
     }
-    */
     /*
     // End plate
     #translate([0,oDepth-5,3.5])
@@ -105,12 +105,10 @@ module edgeBrace() {
     }  
 }
 
-
-// translate ([0,0,60]) color("orange",1.0) cover();
-
-// Extras to turn on to help judge elements
-//sg90(); 
-translate ([0,0,50]) mbcBoard();
+// Temporary parts to see what they look like
+//  translate ([0,0,60]) color("orange",1.0) cover();
+//  sg90(); 
+//  translate ([0,0,50]) mbcBoard();
 
 // main cube
 
@@ -129,8 +127,8 @@ difference() {
             // The main box the every thin is removed from.
             // Add some rounding to the edge.
             minkowski() {
-                translate([1.5,1.5,1.5]) cube([oWidth-3, oDepth-3, oHeight-3]);
-                sphere(r=1.5);
+                translate([1.0,1.0,1.0]) cube([oWidth-2, oDepth-2, oHeight-2]);
+                sphere(r=1.0);
             }
             // remove the main chunk,and trim off the top and end plate.
             union() {
