@@ -28,6 +28,7 @@ wallThicknessP = 3.0;
 oWidth = 80;
 oHeight = 40;
 oDepth = 120;
+oCapThickness = 6;
  
 // servo 
 
@@ -36,8 +37,10 @@ plugDiameter = 27;
 plugThickness = 3.5;
 
 $fn = 40;
+
+// Model of an sg90 servo. Thre is a fair amount of variance in these parts.
+// so beware
 module sg90() {
-    sg90Width = 12;
     width = 12.6;
     gearcCapThickness = 4.2;
     color("blue", 1.0 ) translate([0,0,width/2]) rotate([0,90,0]) union() {
@@ -52,6 +55,8 @@ module sg90() {
     }
 }
 
+// This is a special version of the ring of wedges. When the wedges are used
+// for adifference operation the dimensions are tweaked a bit so parts fit better.
 module negativePegRing (pegCount = 6, diameter = 26.8, innerDiameter = 15, height = 2.5) {
     od = diameter + 0.2;
     id = innerDiameter - 0.3;
@@ -59,21 +64,33 @@ module negativePegRing (pegCount = 6, diameter = 26.8, innerDiameter = 15, heigh
     circlePegs(pegs = pegCount, diameter=od, height=height, innerDiameter = id, fudge = wedgeFuge);
 }
 
+// Simple shell that represents the microbit controller shell.
 module mbcBoard() {
     // Place holder for circuit board
-    #translate([4.5, 15, 27]) union () { 
-        color( "lime", alpha = 0.5) cube([63.5,99.5,3.7]);  
+     translate([4.5, 14, 27]) union () { 
+         color( "lime", alpha = 0.5) cube([63.5,100.0,3.7]);  
+        translate ([5,90,-10])cube([10,10,10]);
         //color("black",0.5)  
     }
 }
 
 module cover() {
     // Top
-    translate([0,0,oHeight-6])
-        cube([oWidth, oDepth, 6]);
+    /*
+    #translate([0,0,oHeight-3]) union () {
+        #translate([5,oDepth-5,-2]) rotate([15,0,0]) cube([oWidth-13,2,5]);
+        // ridges
+        translate([4.5,oDepth-68,-3])  cube([2,64,3]);
+        translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
+        // main slab
+        cube([oWidth, oDepth, 3]);
+    }
+    */
+    /*
     // End plate
     #translate([0,oDepth-5,3.5])
         cube([oWidth,5, oHeight]);
+    */
 }
 
 module mbcBoardBracket() {
@@ -82,12 +99,18 @@ module mbcBoardBracket() {
     }  
 }
 
+module edgeBrace() {
+    translate([0,3,0]) rotate([90,0,0]) linear_extrude(height=64) {
+        polygon([[0,0],[0,-7],[4,-3],[4,0],[0,0]]);  
+    }  
+}
 
-//color("orange",1.0) cover();
+
+// translate ([0,0,60]) color("orange",1.0) cover();
 
 // Extras to turn on to help judge elements
 //sg90(); 
-//mbcBoard();
+translate ([0,0,50]) mbcBoard();
 
 // main cube
 
@@ -109,14 +132,20 @@ difference() {
                 translate([1.5,1.5,1.5]) cube([oWidth-3, oDepth-3, oHeight-3]);
                 sphere(r=1.5);
             }
+            // remove the main chunk,and trim off the top and end plate.
             union() {
-                color("orange",1.0) cover();
+                //color("orange",1.0) cover();
                 // clear out core of box
                 translate([plugThickness+1, wallThickness + 1.5 , wallThickness + 1.0]) 
-                    cube([oWidth - (2*(plugThickness+1)), oDepth, (oHeight - 2.5)]);
+                    cube([oWidth - (2*(plugThickness+1)), oDepth-(8), (oHeight - 2.5)]);
                 
             }
         }
+        
+
+        // Add a top edge to hold in the top
+        translate([0,4,oHeight- 3]) rotate ([90,0,90]) linear_extrude(height=oWidth) {polygon([[0,0],[0,-4],[3,-1],[3,0],[0,0]]);}  
+
         
         // Center post to support servos. Has tight clearance with battery.
         color( "purple", 1.0 ) translate([25,12,wallThicknessP]) cube([30,10,13]);
@@ -127,14 +156,19 @@ difference() {
 
         // Add brackets to hold the board in place.
         translate([0,109,16]) mbcBoardBracket();
-        translate([80,109,16]) rotate(180) mbcBoardBracket();
+        translate([78,109,16]) rotate(180) mbcBoardBracket();
         translate([0,88.5,16]) mbcBoardBracket();
-        translate([80,88.5,16]) rotate(180) mbcBoardBracket();
+        translate([78,88.5,16]) rotate(180) mbcBoardBracket();
         translate([0,58,16]) mbcBoardBracket();
-        translate([80,58,16]) rotate(180) mbcBoardBracket();
+        translate([78,58,16]) rotate(180) mbcBoardBracket();
+        
+        translate([80-4.5,55,oHeight-3]) rotate(180) edgeBrace();
+
     }
 
 union() {    
+
+    #color("orange",0.5) cover();
 
     // peg slots in bottom
     translate([20,20,0.0]) negativePegRing();
