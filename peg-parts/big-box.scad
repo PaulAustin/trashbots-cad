@@ -77,18 +77,35 @@ module mbcBoard() {
 
 module cover() {
     // Top
-    #translate([0,0,oHeight-2]) union () {
-        #translate([5,oDepth-5,-3]) rotate([7,0,0]) cube([oWidth-13,2,5]);
-        // ridges
-        translate([4.5,oDepth-68,-3])  cube([2,64,3]);
-        translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
-        // main slab
-        cube([oWidth, oDepth, 2]);
-        translate([4.5,7,-1]) cube([oWidth-9, oDepth-30, 3]);
+    translate([0,0,oHeight-2]) 
+    difference() {
+        union () {
+            translate([5,oDepth-5,-3]) rotate([7,0,0]) cube([oWidth-13,2,4]);
+            // ridges
+            translate([4.5,oDepth-68,-3])  cube([2,64,3]);
+            translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
+            // main slab
+            cube([oWidth, oDepth, 2]);
+            translate([4.5,7,-1]) cube([oWidth-9, oDepth-30, 3]);
+            #linear_extrude(height = 2.4)
+              translate([67, 110]) {
+                  rotate (180)
+                text("trashbots", font = "Liberation Sans", center = true);
+            }
+        }
+        union () {
+            translate([0,0,-2.0])
+            linear_extrude(height = 5) {
+                translate([10, 20]) square([20, 30]);
+                translate([50, 20]) square([20, 30]);
+                translate([10, 60]) square([60, 35]);
+            }
+            translate([4.5, 52.0, -3]) cube([8,33,5]);
+        }
     }
     /*
     // End plate
-    #translate([0,oDepth-5,3.5])
+    #translate([0,oDepth-5,3.5]) 
         cube([oWidth,5, oHeight]);
     */
 }
@@ -106,12 +123,13 @@ module edgeBrace() {
 }
 
 // Temporary parts to see what they look like
-//  translate ([0,0,60]) color("orange",1.0) cover();
+
 //  sg90(); 
 //  translate ([0,0,50]) mbcBoard();
 
 // main cube
 
+module bigBox() {
 intersection() {
     translate ([-20,-20,-20]) cube([400,350,500]);
     // Servo slice
@@ -132,7 +150,6 @@ difference() {
             }
             // remove the main chunk,and trim off the top and end plate.
             union() {
-                //color("orange",1.0) cover();
                 // clear out core of box
                 translate([plugThickness+1, wallThickness + 1.5 , wallThickness + 1.0]) 
                     cube([oWidth - (2*(plugThickness+1)), oDepth-(8), (oHeight - 2.5)]);
@@ -221,7 +238,13 @@ union() {
   /*  #translate([(oWidth - plugThickness), 5*primaryUnit/2,oHeight/2]) rotate ([0,90,0]) 
         cylinder(d = plugDiameter + 1, h = plugThickness);    
 */
+}
+
 
 }
 }
 }
+
+color("orange",1.0) cover();
+//bigBox();
+
