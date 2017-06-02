@@ -96,9 +96,9 @@ module cover() {
         union () {
             translate([0,0,-2.0])
             linear_extrude(height = 5) {
-                translate([10, 20]) square([20, 30]);
-                translate([50, 20]) square([20, 30]);
-                translate([10, 60]) square([60, 35]);
+                translate([10, 21]) minkowski() {square([18, 28]); circle(r=1);};
+                translate([50, 21]) minkowski() {square([18, 28]); circle(r=1);};
+                translate([10, 60]) minkowski() {square([58, 33]); circle(r=1);};
             }
             translate([4.5, 52.0, -3]) cube([8,33,5]);
         }
