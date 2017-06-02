@@ -80,12 +80,14 @@ module cover() {
     translate([0,0,oHeight-2]) 
     difference() {
         union () {
+            // main slab
+            #linear_extrude(height=2) {translate([1,1]) minkowski() {square([oWidth-2, oDepth-2]); circle(r=1);}}
+            // main slab
+            //cube([oWidth, oDepth, 2]);
             translate([5,oDepth-5,-3]) rotate([7,0,0]) cube([oWidth-13,2,4]);
             // ridges
             translate([4.5,oDepth-68,-3])  cube([2,64,3]);
             translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
-            // main slab
-            cube([oWidth, oDepth, 2]);
             translate([4.5,7,-1]) cube([oWidth-9, oDepth-30, 3]);
             #linear_extrude(height = 2.4)
               translate([67, 110]) {
@@ -96,9 +98,9 @@ module cover() {
         union () {
             translate([0,0,-2.0])
             linear_extrude(height = 5) {
-                translate([10, 21]) minkowski() {square([18, 28]); circle(r=1);};
-                translate([50, 21]) minkowski() {square([18, 28]); circle(r=1);};
-                translate([10, 60]) minkowski() {square([58, 33]); circle(r=1);};
+                translate([11, 22]) minkowski() {square([18, 28]); circle(r=1);};
+                translate([51, 22]) minkowski() {square([18, 28]); circle(r=1);};
+                translate([11, 61]) minkowski() {square([58, 33]); circle(r=1);};
             }
             translate([4.5, 52.0, -3]) cube([8,33,5]);
         }
@@ -245,6 +247,6 @@ union() {
 }
 }
 
-color("orange",1.0) cover();
-//bigBox();
+//color("orange",1.0) cover();
+bigBox();
 
