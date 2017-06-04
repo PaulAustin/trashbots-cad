@@ -1,9 +1,10 @@
-use <hub.scad>;
-use <peg-plug.scad>;
+
 
 plateWidth = 80;
 plateWidth = 80;
 plateThickness = 80;
+use <hub.scad>;
+use <peg-plug.scad>;
 
 module negativePegRing (pegCount = 6, diameter = 26.8, innerDiameter = 15, height = 2.5) {
     od = diameter + 0.2;

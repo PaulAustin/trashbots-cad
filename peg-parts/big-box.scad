@@ -81,28 +81,38 @@ module cover() {
     difference() {
         union () {
             // main slab
-            #linear_extrude(height=2) {translate([1,1]) minkowski() {square([oWidth-2, oDepth-2]); circle(r=1);}}
-            // main slab
-            //cube([oWidth, oDepth, 2]);
-            translate([5,oDepth-5,-3]) rotate([7,0,0]) cube([oWidth-13,2,4]);
+            linear_extrude(height=2) {translate([1,1]) minkowski() 
+                {square([oWidth-2, oDepth-2]); circle(r=1);}}
+            // small snap-in ridge
+            translate([9,oDepth-7.2,-3]) rotate([4,0,0]) cube([oWidth-19,4,4]);
             // ridges
             translate([4.5,oDepth-68,-3])  cube([2,64,3]);
             translate([oWidth - 6.5,oDepth-68,-2])  cube([2,64,2]);
-            translate([4.5,7,-1]) cube([oWidth-9, oDepth-30, 3]);
-            #linear_extrude(height = 2.4)
-              translate([67, 110]) {
-                  rotate (180)
-                text("trashbots", font = "Liberation Sans", center = true);
-            }
+            // Thicker park in middle ( 3mm)     
+            #translate([4.5,4.2,-1]) cube([oWidth-9, oDepth-31, 3]);
+            // Large lip to hold top in.
+            translate([4.6,4.1,-5]) rotate([90,0,0]) rotate([0,90,0])
+                linear_extrude(height=80-9)
+                polygon([[0,0],[3,3],[3,4],[6.5,4],[5.5,0],[0,0]]);
         }
         union () {
             translate([0,0,-2.0])
             linear_extrude(height = 5) {
+                // Port 1
                 translate([11, 22]) minkowski() {square([18, 28]); circle(r=1);};
+                // Port 2
                 translate([51, 22]) minkowski() {square([18, 28]); circle(r=1);};
+                // Micro:bit port
                 translate([11, 61]) minkowski() {square([58, 33]); circle(r=1);};
             }
-            translate([4.5, 52.0, -3]) cube([8,33,5]);
+            // hack port for buttons
+            translate([4.5, 54.0, -3]) cube([8,31,5]);
+            // text
+            translate([0,0,1.5])linear_extrude(height = 1.0)
+              translate([67, 110]) {
+                  rotate (180)
+                text("trashbots", font = "Liberation Sans", center = true);
+            }
         }
     }
     /*
@@ -133,9 +143,9 @@ module edgeBrace() {
 
 module bigBox() {
 intersection() {
-    translate ([-20,-20,-20]) cube([400,350,500]);
+    //translate ([-20,-20,-20]) cube([400,350,500]);
     // Servo slice
-    // translate ([0,5,0]) cube([60,15,50]);
+     translate ([0,0,0]) cube([60,15,50]);
     // translate ([0,5,0]) cube([80,35,50]);
 
 difference() {
@@ -247,6 +257,9 @@ union() {
 }
 }
 
-//color("orange",1.0) cover();
-bigBox();
+intersection() {
+    #translate([10,0,45]) rotate([0,180,0]) color("orange",1.0) cover();
+ //   #translate([-70,0,0]) cube([12,120,20]);
+}
+//bigBox();
 
