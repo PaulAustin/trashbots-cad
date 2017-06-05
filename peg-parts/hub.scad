@@ -42,6 +42,7 @@ coreDiameter = 6.9;
 //  v0.1.0 Initial print test for Reynosa trip
 //  v0.1.2 Widened slot to 10.2mm, and chamfer used vars
 //  v0.1.3 Peg insets are 0.15mm deeper to allow for printing
+//  v0.1.4 Peg insets are 0.2mm deeper to allow for printing
 
 // Cylinder with slot in it for optional key, and bevel
 module slottedShaft(d=8, h=10) {
@@ -96,7 +97,7 @@ module pegPlugHub(pegCount = 6, pegHeight = 2.5) {
     // TODO pull these tweak to high level settings, they may apply to to multiple pieces.
     difference() {
         rotate([0,0,-15]) plugHub(plugCount = pegCount);
-        rotate([0,0,-15]) circlePegs(pegs = pegCount, diameter=27.0, height=pegHeight+0.15, innerDiameter = 14.7, fudge = 0.99);
+        rotate([0,0,-15]) circlePegs(pegs = pegCount, diameter=27.0, height=pegHeight+0.2, innerDiameter = 14.7, fudge = 0.99);
     }
 
     translate ([0,0,10]) rotate([0,0,-15]) circlePegs(pegs = pegCount, diameter=26.8, height=pegHeight);
