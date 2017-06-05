@@ -69,7 +69,7 @@ module gearHub(r) {
 gearHub(r=10);
 
 // Other examples
-
-translate([50,0,0]) slottedShaft();
-translate([0,40,0]) gearSolid(r=30);
+translate([50,0,0]) gearSolid();
+translate([80,0,0]) slottedShaft();
+translate([0,40,0]) gearHub(r=30);
 
