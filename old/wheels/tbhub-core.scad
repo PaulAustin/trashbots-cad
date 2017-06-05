@@ -22,37 +22,45 @@ SOFTWARE.
 
 $fn = 50;
 
-module coreHub(spineCount = 20, coreH = 4, splineH = 3, d = 7) {
-    
+module coreHub(splineCount = 20, coreH = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
     
     // Approx spline shaft diameters
     // sg90(subMicro) - 5mm
     // micro          - 6mm
+    screwFlangeThickness = 3.5;
+    screwHeadDiameter = 5;
+    screwShaftDiameter = 2.2;
     
-
     // The main shaft hub
     difference() {
-        cylinder(d=d, h=splineH);
-        cylinder(d=4.7, h=splineH);
+        cylinder($fn = 6, d=d, h=splineH);
+        cylinder(d=splineD+0.35, h=splineH);
     }
 
-    // Hole for the screw
-    difference() {    
-        translate([0,0,splineH]) cylinder(d=d,0,h=1);
-        translate([0,0,splineH]) cylinder(d=2,h=1);
-    }
-    
     // Splines on the inside of the hub
     color("red") linear_extrude(splineH)
-    for ( rib = [0:(360/spineCount):360]) {
+    for ( rib = [0:(360/splineCount):360]) {
         // Pivot aroung origin
         rotate([0,0,rib])
         // Move out from origin
-        translate([2.38,0,0])
+        translate([splineD/2+0.2,0,0])
         // Make corner face origin
         rotate([0,0,45])
         // Make a square
-        square([0.43,0.43], center = true);
+        square([0.7,0.7], center = true);
     }
+    
+
+    // Hole for the screw
+    color("green") difference() {    
+        translate([0,0,splineH]) cylinder($fn = 6, d=d,h=(coreH - splineH));
+        {
+        translate([0,0,splineH]) cylinder(d=screwShaftDiameter, h=screwFlangeThickness);
+        translate([0,0,splineH+screwFlangeThickness]) cylinder(d=screwHeadDiameter,h=10);
+        #translate([0,0,1.3])sphere(d=5.5);
+        }
+    }
+    
 }
-#coreHub(coreH = 5);
+
+rotate([180,0,0]) coreHub(splineCount = 21, coreH = 10);

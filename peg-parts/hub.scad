@@ -1,25 +1,18 @@
 /*
-Copyright (c) 2017 Paul Austin - SDG
+Copyright 2017 Trashbots Inc.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+    http://www.apache.org/licenses/LICENSE-2.0
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 */
-
 
 $fn=60;
 
@@ -89,7 +82,41 @@ module plugHub(plugCount = 6) {
     }
 }
 
-use <peg-plug.scad>;
+module circlePegs (pegs = 6, diameter = 26.8, innerDiameter = 15, height = 3, fudge = 1.04) {
+    step        = 360 / pegs;
+
+    // Additional amount keeps the plug from binding too hard when 
+    // pluged into a complimentary part.
+    halfStep    = (step / 2) * fudge;
+    radius      = (diameter / 2);
+    pegHeight   = height;
+    
+    rotate (-step/4) 
+    linear_extrude(height=pegHeight) 
+    difference () {
+        difference() {
+            circle(d=diameter);
+            circle(d=innerDiameter);
+        }
+        for (i = [0:step:360]) {
+            // The diameter is used so the triangle is much longer than the edges need
+            // but long enough to clear out the entire wedge.
+            polygon([
+                    [0,0],
+                    [diameter * cos(i), diameter * sin(i) ],
+                    [diameter * cos(i + (halfStep)), diameter * sin(i+(halfStep)) ]
+                    ]);
+        }
+    }
+}
+
+module circlePegsWithBase(pegs = 6, diameter = 26.8, innerDiameter = 15, heigth = 6) {
+    baseHieght  = heigth / 2;
+
+    translate([0,0,-baseHieght]) linear_extrude(heigth/2) circle(d=diameter);
+    circlePegs(pegs, diameter, innerDiameter, heigth/2);
+}
+
 
 module pegPlugHub(pegCount = 6, pegHeight = 2.5) {
 
