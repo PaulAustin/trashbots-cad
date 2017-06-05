@@ -23,28 +23,29 @@ module gearSolid(d=20, h=10) {
     // Tooth radius is set by picking an dimension the yields
     // a 'reasonable' number of whole teeth at a defined radius
     toothRadius = 1.7453; 
+    toothDiameter = 4.4906;
     
     // The radius is the mid point on the tooth. So the over radius is
     // Geat radius +/- the tooth radius.  
     q = d/20;
     toothCount = 9 * q;
-    offsetAngle  = 360 / toothCount * (toothRadius * 2);
+    offsetAngle  = 360 / toothCount * (toothDiameter);
 
-    echo("Gear average radius = ", r);
+    echo("Gear average diameter = ", d);
     echo("Circumfrence = ", d * 3.14159);
     echo("ToothCount = ", toothCount);
     echo("ToothDiameter = ", toothRadius * 2);
-    echo("NetToothCircumfrence = ", toothCount * toothRadius * 4);
+    echo("NetToothCircumfrence = ", toothCount * toothDiameter * 2);
     difference() {
         linear_extrude(thickness) {
             difference() {
                 circle(d=d);
                 for(i=[0:360/toothCount:360]) {
-                    rotate(i) translate([(d/2) + 0.2,0,0]) circle(r = toothRadius);
+                    rotate(i) translate([(d/2) + 0.2,0,0]) circle(d = toothDiameter);
                 }
             }
             for(i=[0:360/toothCount:360]) {
-                rotate(i+offsetAngle) translate([(d/2)-0.2,0,0]) circle(r = toothRadius);
+                rotate(i+offsetAngle) translate([(d/2)-0.2,0,0]) circle(d = toothDiameter);
             }
         }        
     }
@@ -66,10 +67,11 @@ module gearHub(d) {
 }
 
 // GearSolid(r=10);
-gearHub(d=20);
+//gearHub(d=20);
 
 // Other examples
-translate([50,0,0]) gearSolid();
-translate([80,0,0]) slottedShaft();
-translate([0,40,0]) gearHub(d=60);
+//translate([50,0,0]) gearSolid();
+//translate([80,0,0]) slottedShaft();
+//translate([0,40,0]) gearHub(d=60);
+translate([-40,-0,0]) gearHub(d=20);
 
