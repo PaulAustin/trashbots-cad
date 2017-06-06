@@ -34,6 +34,8 @@ module gearSolid(d=20, h=10) {
     toothDiameter = 3.14159;
     toothRadius = toothDiameter/2; 
     
+    // Inset radius for a bit of a gap.
+    toothCenterOffset = (d/2) -0.25;
     
     // The old 9 tooth settings ( 62.8308 / 9 / 2) 
     // toothDiameter = 3.49065;
@@ -55,16 +57,16 @@ module gearSolid(d=20, h=10) {
         linear_extrude(thickness) {
             // Valley of each tooth is subtracted out of larger disk.
             difference() {
-                circle(d=d);
+                circle(r=toothCenterOffset);
                 union() {
                     for(i=[0:360/toothCount:360]) {
-                        rotate(i) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter);
+                        rotate(i) translate([toothCenterOffset,0,0]) circle(d = toothDiameter);
                     }
                 }
             }
             // Top of each tooth is added to the disk. Tweaks are based on visual inspection.
             for(i=[0:360/toothCount:360]) {
-                rotate(i+offsetAngle) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter - 0.06);
+                rotate(i+offsetAngle) translate([toothCenterOffset,0,0]) circle(d = toothDiameter - 0.16);
             }
         }        
     }
