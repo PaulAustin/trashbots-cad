@@ -17,6 +17,7 @@ limitations under the License.
 
 // v0.0.1 Initial checked in version 
 // v0.0.2 Added Chamfer at base, still need to shorten the post.
+// v0.0.3 Reduced post height to 8mm
 
 use <hub.scad>;
 $fn = 60;
@@ -26,7 +27,7 @@ module pegPlateAxel(pegCount = 6, pegHeight = 2.4) {
     shaftRadius = shaftDiameter/2;
     plateThickness = 1.4;
     pLateDiameter = 27;
-    postHeight = 10;
+    postHeight = 8;
 
     translate([0,0,0]) color("orange") cylinder(r1=(pLateDiameter/2), r2 =(pLateDiameter/2)-1, h=plateThickness);
     translate([0,0,-2.4]) rotate([0,0,0]) circlePegs(pegs = pegCount, diameter=26.8, height=2.4);
