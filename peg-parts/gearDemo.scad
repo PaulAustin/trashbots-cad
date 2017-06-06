@@ -17,6 +17,8 @@ limitations under the License.
 // Make the surfaces smooth by increasing the face count.
 $fn=60;
 
+//  v0.0.1  working on inset sides.
+
 // Gear geometrey is based on 10 teeth on a 20mm wheel. At this size they are not too sharp.
 // and there is some leway.
 
@@ -53,8 +55,10 @@ module gearSolid(d=20, h=10) {
             // Valley of each tooth is subtracted out of larger disk.
             difference() {
                 circle(d=d);
-                for(i=[0:360/toothCount:360]) {
-                    rotate(i) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter);
+                union() {
+                    for(i=[0:360/toothCount:360]) {
+                        rotate(i) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter);
+                    }
                 }
             }
             // Top of each tooth is added to the disk. Tweaks are based on visual inspection.
@@ -65,22 +69,55 @@ module gearSolid(d=20, h=10) {
     }
 }
 
+module insetGearSolid(d=20, h=10) {
+    plateDiameter = 27.5;
+    platThickness = 1.5;
+    plateRadius = plateDiameter/2;
+    difference() {
+        gearSolid(d,h);
+        union() {
+            #cylinder(r1 = plateRadius, r2 = plateRadius-1, h = platThickness);
+            translate([0,0,h-platThickness])
+            #cylinder(r2 = plateRadius, r1 = plateRadius-1, h = platThickness);
+        }
+    }
+}
+
+// Cylinder with slot in it for optional key, and bevel
+module slottedShaft2(d=8, h=10) {
+    platThickness = 1.5;
+    bevelThicknes = 1.0;
+    cylinder(d=d,h=h);
+    translate([0,0,h-platThickness-bevelThicknes])
+        cylinder(r2=(d/2)+1,r1=(d/2),h=bevelThicknes);
+    translate([0,0,platThickness]) cylinder(r1=(d/2)+1,r2=(d/2),h=bevelThicknes);
+    translate([-5.05,-1.05,0]) cube([10.1,2.1,h]);
+}
+
 // Cylinder with slot in it for optional key, and bevel
 module slottedShaft(d=8, h=10) {
     cylinder(d=d,h=h);
-    translate([0,0,h-2.1])cylinder(r2=(d/2)+1,r1=(d/2),h=2.1);
+    translate([0,0,h-2.1]) cylinder(r2=(d/2)+1,r1=(d/2),h=2.1);
     translate([-5.05,-1.05,0]) cube([10.1,2.1,h]);
 }
 
 // A Gear with shaft and slot.
-module gearHub(d) {
-    difference() {
-        gearSolid(d);
-        slottedShaft();
+module gearHub(d, inset = false) {
+    if (inset) {
+        difference() {
+            insetGearSolid(d);
+            #slottedShaft2();
+        }    
+    } else {
+        difference() {
+            gearSolid(d);
+            slottedShaft();
+        }
     }
 }
 
 // Other examples
+/*
 translate([50,0,0]) gearSolid();
 translate([80,0,0]) slottedShaft();
 translate([0,0,0]) color("blue") gearHub(d=60);
@@ -88,5 +125,8 @@ translate([-40,0,0]) rotate(18) color("lightBlue") gearHub(d=20);
 translate([-65,0,0]) rotate(0) color("lightBlue") gearHub(d=30);
 translate([-100,0,0]) rotate(0) color("lightBlue") gearHub(d=40);
 translate([-145,0,0]) rotate(7.05) color("lightBlue") gearHub(d=50);
+*/
+
+translate([0,70,0]) color("blue") gearHub(d=40, inset=true);
 
 
