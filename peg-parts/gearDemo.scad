@@ -17,35 +17,49 @@ limitations under the License.
 // Make the surfaces smooth by increasing the face count.
 $fn=60;
 
+// Gear geometrey is based on 10 teeth on a 20mm wheel. At this size they are not too sharp.
+// and there is some leway.
+
+
 module gearSolid(d=20, h=10) {
     thickness = h;
     
     // Tooth radius is set by picking an dimension the yields
     // a 'reasonable' number of whole teeth at a defined radius
-    toothRadius = 1.7453; 
-    toothDiameter = 4.4906;
+
+    // with ten teeth the tooth diameter is pi.
+    toothDiameter = 3.14159;
+    toothRadius = toothDiameter/2; 
+    
+    
+    // The old 9 tooth settings ( 62.8308 / 9 / 2) 
+    // toothDiameter = 3.49065;
+    // toothRadius = toothDiameter/2; 
+    
     
     // The radius is the mid point on the tooth. So the over radius is
     // Geat radius +/- the tooth radius.  
-    q = d/20;
-    toothCount = 9 * q;
-    offsetAngle  = 360 / toothCount * (toothDiameter);
+    midlineCircumfrence = d * 3.14159;
+    toothCount = midlineCircumfrence / (toothDiameter * 2);
+    offsetAngle  = 360 / (toothCount * 2);
 
     echo("Gear average diameter = ", d);
-    echo("Circumfrence = ", d * 3.14159);
+    echo("Circumfrence = ", midlineCircumfrence);
     echo("ToothCount = ", toothCount);
-    echo("ToothDiameter = ", toothRadius * 2);
+    echo("ToothDiameter = ", toothDiameter);
     echo("NetToothCircumfrence = ", toothCount * toothDiameter * 2);
     difference() {
         linear_extrude(thickness) {
+            // Valley of each tooth is subtracted out of larger disk.
             difference() {
                 circle(d=d);
                 for(i=[0:360/toothCount:360]) {
-                    rotate(i) translate([(d/2) + 0.2,0,0]) circle(d = toothDiameter);
+                    rotate(i) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter);
                 }
             }
+            // Top of each tooth is added to the disk. Tweaks are based on visual inspection.
             for(i=[0:360/toothCount:360]) {
-                rotate(i+offsetAngle) translate([(d/2)-0.2,0,0]) circle(d = toothDiameter);
+                rotate(i+offsetAngle) translate([(d/2) - 0.06,0,0]) circle(d = toothDiameter - 0.06);
             }
         }        
     }
@@ -66,12 +80,13 @@ module gearHub(d) {
     }
 }
 
-// GearSolid(r=10);
-//gearHub(d=20);
-
 // Other examples
-//translate([50,0,0]) gearSolid();
-//translate([80,0,0]) slottedShaft();
-//translate([0,40,0]) gearHub(d=60);
-translate([-40,-0,0]) gearHub(d=20);
+translate([50,0,0]) gearSolid();
+translate([80,0,0]) slottedShaft();
+translate([0,0,0]) color("blue") gearHub(d=60);
+translate([-40,0,0]) rotate(18) color("lightBlue") gearHub(d=20);
+translate([-65,0,0]) rotate(0) color("lightBlue") gearHub(d=30);
+translate([-100,0,0]) rotate(0) color("lightBlue") gearHub(d=40);
+translate([-145,0,0]) rotate(7.05) color("lightBlue") gearHub(d=50);
+
 

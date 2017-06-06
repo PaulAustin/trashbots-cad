@@ -29,7 +29,7 @@ module pegPlateAxel(pegCount = 6, pegHeight = 2.4) {
     postHeight = 10;
 
     translate([0,0,0]) color("orange") cylinder(r1=(pLateDiameter/2), r2 =(pLateDiameter/2)-1, h=plateThickness);
-    translate([0,0,-2.4]) rotate([0,0,15]) circlePegs(pegs = pegCount, diameter=26.8, height=2.4);
+    translate([0,0,-2.4]) rotate([0,0,0]) circlePegs(pegs = pegCount, diameter=26.8, height=2.4);
     
     difference() {
         union() {
