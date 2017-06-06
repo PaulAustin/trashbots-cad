@@ -22,6 +22,7 @@ $fn=60;
 // Gear geometrey is based on 10 teeth on a 20mm wheel. At this size they are not too sharp.
 // and there is some leway.
 
+use <../hub.scad>;
 
 module gearSolid(d=20, h=10) {
     thickness = h;
@@ -76,9 +77,12 @@ module insetGearSolid(d=20, h=10) {
     difference() {
         gearSolid(d,h);
         union() {
-            #cylinder(r1 = plateRadius, r2 = plateRadius-1, h = platThickness);
+            cylinder(r1 = plateRadius, r2 = plateRadius-1, h = platThickness);
             translate([0,0,h-platThickness])
-            #cylinder(r2 = plateRadius, r1 = plateRadius-1, h = platThickness);
+            cylinder(r2 = plateRadius, r1 = plateRadius-1, h = platThickness);
+            
+            #rotate([0,0,0]) circlePegs(pegs = 6, diameter=27.0, height=10, innerDiameter = 14.7, fudge = 0.99);
+
         }
     }
 }
@@ -127,6 +131,6 @@ translate([-100,0,0]) rotate(0) color("lightBlue") gearHub(d=40);
 translate([-145,0,0]) rotate(7.05) color("lightBlue") gearHub(d=50);
 */
 
-translate([0,70,0]) color("blue") gearHub(d=40, inset=true);
+translate([0,0,0]) color("blue") gearHub(d=40, inset=true);
 
 
