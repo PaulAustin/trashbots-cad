@@ -30,6 +30,6 @@ difference() {
 }
 
 intersection() {
-    cylinder(d=8,h=10);
+    cylinder(d=7.5,h=10);
     rotate([0,0,0]) coreHub(splineCount = 21, h= 5, coreH = 11, d = 9.4);
 }
