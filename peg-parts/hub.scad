@@ -129,6 +129,22 @@ module pegPlugHub(pegCount = 6, pegHeight = 2.5) {
 
     translate ([0,0,10]) rotate([0,0,-15]) circlePegs(pegs = pegCount, diameter=26.8, height=pegHeight);
 }
+
+module insetpegPlugHub(pegCount = 6, pegHeight = 2.5) {
+    difference() {
+        pegPlugHub(pegCount = 6, pegHeight = 2.5);
+        union() {
+            offset([0,0,8]) clyinder(r1=9,r2=9,h=2);
+        }
+    }
+}
+
 // Rotaate 15deg to aling a set of slots along hte 45deg axis, this helps with 
 // default file and surface fills
-rotate([0,0,-15]) plugHub(plugCount = 6);
+//rotate([0,0,-15]) plugHub(plugCount = 6);
+intersect() {
+    translate([60,0,0]) rotate([0,0,-15]) pegPlugHub(plugCount = 6, pegHeight = 2.5);
+    
+    // add cube so we can get a cross section.
+}
+
