@@ -89,24 +89,6 @@ module insetGearSolid(d=20, h=10) {
     }
 }
 
-// Cylinder with slot in it for optional key, and bevel
-module slottedShaft2(d=8, h=10) {
-    platThickness = 1.5;
-    bevelThicknes = 1.0;
-    cylinder(d=d,h=h);
-    translate([0,0,h-platThickness-bevelThicknes])
-        cylinder(r2=(d/2)+1,r1=(d/2),h=bevelThicknes);
-    translate([0,0,platThickness]) cylinder(r1=(d/2)+1,r2=(d/2),h=bevelThicknes);
-    translate([-5.05,-1.05,0]) cube([10.1,2.1,h]);
-}
-
-// Cylinder with slot in it for optional key, and bevel
-module slottedShaft(d=8, h=10) {
-    cylinder(d=d,h=h);
-    translate([0,0,h-2.1]) cylinder(r2=(d/2)+1,r1=(d/2),h=2.1);
-    translate([-5.05,-1.05,0]) cube([10.1,2.1,h]);
-}
-
 // A Gear with shaft and slot.
 module gearHub(d, inset = false) {
     if (inset) {
@@ -117,7 +99,7 @@ module gearHub(d, inset = false) {
     } else {
         difference() {
             gearSolid(d);
-            slottedShaft();
+            slottedShaftGear();
         }
     }
 }
