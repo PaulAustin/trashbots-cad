@@ -72,6 +72,23 @@ module gearSolid(d=20, h=10) {
     }
 }
 
+// A gear solid with slighly chamfered (beveled) edges. So they feel smoother in the hand, 
+// and are easier to remove from the build plate.
+module chamferedGearSolid(d=20, h=10) {
+    r = d/2;
+    chamfer = 0.75;
+    // Gear teeth extend beyond the radius
+    outerR = r + 1.25;
+    intersection() {
+        #union() {
+            cylinder(r2=outerR, r1 = outerR-(chamfer*.75), h = chamfer);
+            translate([0,0,chamfer]) cylinder(r=outerR, h = h-(chamfer*2));
+            translate([0,0,h-chamfer]) cylinder(r1=outerR, r2 = outerR-(chamfer*.75) , h = chamfer);
+        }
+        gearSolid(d,h);
+    }
+}
+
 module insetGearSolid(d=20, h=10) {
     plateDiameter = 27.5;
     platThickness = 1.5;
@@ -114,6 +131,8 @@ translate([-65,0,0]) rotate(0) color("lightBlue") gearHub(d=30);
 translate([-100,0,0]) rotate(0) color("lightBlue") gearHub(d=40);
 translate([-145,0,0]) rotate(7.05) color("lightBlue") gearHub(d=50);
 */
+
+//chamferedGearSolid(d=26,h=10);
 
 translate([0,0,0]) color("blue") gearHub(d=40, inset=true);
 
