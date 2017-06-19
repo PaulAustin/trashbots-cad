@@ -55,10 +55,13 @@ module plugHub(plugCount = 6) {
                 translate([0,0,0])
                 rotate(i)
                 translate([hubDiameter-slatDepth,0,-0.5]) rotate([90,0,0])  {
+                    rotate([90,0,0]){
                     // Slot for a popsicle stick
+                    translate([0, -slatWidth/2, -(slatWidth/2+1.5)])   
+                    linear_extrude(slatThickness) square([slatDepth,slatWidth]);
+                    }
                     translate([0,0,-slatThickness/2])   
                     linear_extrude(slatThickness) square([slatDepth,slatWidth+1]);
-                    
                     // Carve out back of slot as well
                     translate([3.3,(slatWidth+1)/2,-slatThickness/2])   cylinder(h = slatThickness, d = slatWidth*1.2);
                     
@@ -73,4 +76,4 @@ module plugHub(plugCount = 6) {
 
 // Rotaate 15deg to aling a set of slots along hte 45deg axis, this helps with 
 // default file and surface fills
-rotate([0,0,0]) plugHub(plugCount = 6);
+rotate([0,0,-15]) plugHub(plugCount = 6);
