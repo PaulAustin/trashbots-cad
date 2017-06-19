@@ -18,7 +18,7 @@ $fn = 60;
 
 use <hub.scad>
 
-use <tbhub-core.scad>
+use <motor-shaft-adapter.scad>
 
 difference() {
     cylinder(d=26.5,h=3);

@@ -22,15 +22,10 @@ SOFTWARE.
 
 $fn = 50;
 
-module simpleHub(splineCount = 20, h = 4.5, d = 8.5) {
-    // Six sides cylinder is a short cut for extruded hexagon. Its also
-    // much faster than constructing one from polygons.
-    // Use the simple hub to create plug hole for a hub.
-    cylinder($fn = 6, d=d, h=h);
-}
-
+// A spline hub typical of sg90 servos. The number of splines vary some are
+// 20 some are 21, diameter varies as well.
 module coreHub(splineCount = 20, h = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
-    
+
     // Approx spline shaft diameters
     // sg90(subMicro) - 5mm
     // micro          - 6mm
@@ -38,7 +33,7 @@ module coreHub(splineCount = 20, h = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
     screwHeadDiameter = 5;
     screwShaftDiameter = 2.2;
     coreH= h;
-    
+
     // The main shaft hub
     difference() {
         cylinder($fn = 6, d=d, h=splineH);
@@ -57,9 +52,9 @@ module coreHub(splineCount = 20, h = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
         // Make a square
         square([0.7,0.7], center = true);
     }
-    
+
     // Hole for the screw
-    color("green") difference() {    
+    color("green") difference() {
         translate([0,0,splineH]) cylinder($fn = 6, d=d,h=(coreH - splineH));
         union() {
             translate([0,0,splineH]) cylinder(d=screwShaftDiameter, h=screwFlangeThickness);
@@ -67,7 +62,7 @@ module coreHub(splineCount = 20, h = 4.5, splineH = 3, splineD=5.0, d = 8.5) {
             translate([0,0,1.9]) cylinder(h=2.5, d1 = 7, d2 = screwShaftDiameter);
         }
     }
-    
+
 }
 
 rotate([0,0,0]) coreHub(splineCount = 21, coreH = 10, d = 8.4);

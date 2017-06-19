@@ -16,7 +16,7 @@ limitations under the License.
 
 $fn=60;
 
-use <tbhub-core.scad>
+use <motor-shaft-adapter.scad>
 
 // dimensions units in mm
 slatWidth = 10;
@@ -26,7 +26,7 @@ stickDiameter = 6;
 hubDiameter = 20;
 coreDiameter = 6.9;
 
-// Strategy 
+// Strategy
 // 1. Core hub + spline core
 // 2. Remove slots
 // 3. Remove compression slots
@@ -40,7 +40,7 @@ coreDiameter = 6.9;
 // Cylinder with slot in it for optional key, and bevel
 module slottedShaft(d=8, h=10) {
     slotWidth = 10.2;
-    slotThickness = 2.1; 
+    slotThickness = 2.1;
     chamfer = 1.1;
     cylinder(d=d,h=h);
     translate([0,0,h-2.1]) cylinder(r2=(d/2)+chamfer, r1=(d/2), h=2.1);
@@ -48,7 +48,7 @@ module slottedShaft(d=8, h=10) {
     translate([0,0,0]) cylinder(r1=(d/2)+chamfer, r2=(d/2), h=2.1);
 }
 
-// Consolidate this wiht one above 
+// Consolidate this wiht one above
 // Cylinder with slot in it for optional key, and bevel
 module slottedShaftGear(d=8, h=10) {
     cylinder(d=d,h=h);
@@ -88,13 +88,13 @@ module plugHub(plugCount = 6) {
                 rotate(i)
                 translate([hubDiameter-slatDepth,0,-0.5]) rotate([90,0,0])  {
                     // Slot for a popsicle stick
-                    translate([0,0,-slatThickness/2])   
+                    translate([0,0,-slatThickness/2])
                     linear_extrude(slatThickness) square([slatDepth,slatWidth+1]);
-                    
+
                     // Carve out back of slot as well
                     translate([3.3,(slatWidth+1)/2,-slatThickness/2])   cylinder(h = slatThickness, d = slatWidth*1.2);
-                    
-                    // Cylinder for straw 
+
+                    // Cylinder for straw
                     translate([0,(slatWidth+1)/2,0])
                     rotate([90,0,90]) cylinder(d=stickDiameter, h=slatDepth);
                 }
@@ -106,14 +106,14 @@ module plugHub(plugCount = 6) {
 module circlePegs (pegs = 6, diameter = 26.8, innerDiameter = 15, height = 3, fudge = 1.04) {
     step        = 360 / pegs;
 
-    // Additional amount keeps the plug from binding too hard when 
+    // Additional amount keeps the plug from binding too hard when
     // pluged into a complimentary part.
     halfStep    = (step / 2) * fudge;
     radius      = (diameter / 2);
     pegHeight   = height;
-    
-    rotate (-step/4) 
-    linear_extrude(height=pegHeight) 
+
+    rotate (-step/4)
+    linear_extrude(height=pegHeight)
     difference () {
         difference() {
             circle(d=diameter);
@@ -160,12 +160,11 @@ module insetpegPlugHub(pegCount = 6, pegHeight = 2.5) {
     }
 }
 
-// Rotaate 15deg to aling a set of slots along hte 45deg axis, this helps with 
+// Rotaate 15deg to aling a set of slots along hte 45deg axis, this helps with
 // default file and surface fills
 //rotate([0,0,-15]) plugHub(plugCount = 6);
 intersect() {
     translate([60,0,0]) rotate([0,0,-15]) pegPlugHub(plugCount = 6, pegHeight = 2.5);
-    
+
     // add cube so we can get a cross section.
 }
-
