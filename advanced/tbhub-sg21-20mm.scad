@@ -31,7 +31,7 @@ slatDepth = 10;
 slatThickness = 1.9;
 stickDiameter = 6;
 hubDiameter = 20;
-coreDiameter = 7;
+coreDiameter = 6.9;
 
 // Strategy 
 // 1. Core hub + spline core
@@ -40,7 +40,7 @@ coreDiameter = 7;
 
 // Hub
 module plugHub(plugCount = 6) {
-    coreHub(h = slatWidth);
+    coreHub(coreH = slatWidth, splineCount = 21, splineH = 3);
     difference() {
         color("cyan") rotate_extrude() {
             difference(){
