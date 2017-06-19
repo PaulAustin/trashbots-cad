@@ -90,17 +90,21 @@ module chamferedGearSolid(d=20, h=10) {
 }
 
 module insetGearSolid(d=20, h=10) {
-    plateDiameter = 27.5;
+    pieDiameter = d-8;
+//    pieDiameter = 27.0;
+    plateDiameter = pieDiameter + 0.5;
     platThickness = 1.5;
     plateRadius = plateDiameter/2;
     difference() {
-        gearSolid(d,h);
+        chamferedGearSolid(d,h);
         union() {
+            // Add a top and bottom chamfered disk to allow room for a post plate
+            // or torque transfer ring.
             cylinder(r1 = plateRadius, r2 = plateRadius-1, h = platThickness);
             translate([0,0,h-platThickness])
             cylinder(r2 = plateRadius, r1 = plateRadius-1, h = platThickness);
-            
-            #rotate([0,0,0]) circlePegs(pegs = 6, diameter=27.0, height=10, innerDiameter = 14.7, fudge = 0.99);
+            // Remove the pi slice holes.
+            #rotate([0,0,0]) circlePegs(pegs = 6, diameter=pieDiameter, height=10, innerDiameter = 14.7, fudge = 0.99);
 
         }
     }
