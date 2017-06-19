@@ -26,7 +26,7 @@ toothCount = 28;
 odRadius = 31;
 idRadius = 20.1;
 
-$fn=60;
+$fn=40;
 
 toothStep = 360/toothCount;
 
@@ -38,17 +38,22 @@ difference() {
                 rotate(i) translate([odRadius+0.2,0,0]) circle(1.75);
             }
         }
-        for(i=[0:toothStep:360]) {
+        #for(i=[0:toothStep:360]) {
             rotate(i + (toothStep/2)) translate([odRadius-0.2,0,0]) circle(1.73);
         }
     }
-    linear_extrude(thickness) {
+    linear_extrude(thickness+1) {
      union() {
         circle(r=idRadius);
         for(i=[0:360/6:360]) {
-            rotate(i) translate([odRadius-6,0,0]) circle(3.0);
+            rotate(i) translate([odRadius-6,0,0]) circle(d=5.0);
         }
      }
  }
     //simpleHub(d=hubDiameter, h=thickness);
+}
+#linear_extrude(thickness) {
+    for(i=[0:360/6:360]) {
+        rotate(i+30) translate([odRadius-10.6,0,0]) circle(d=1.3);
+    }
 }
